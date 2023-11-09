@@ -1,4 +1,3 @@
-
 const request = require('supertest')
 const app = require("./src/app.js");
 const { Restaurant } = require("./models");
@@ -78,3 +77,12 @@ test("should delete db entry by id", async () => {
     expect(restaurants.length).toEqual(restQuantity); 
     expect(restaurants[0].id).not.toEqual(1);    
 });
+
+  
+    test ("should return errors array if fields aren't provided", async () => {
+    const response = await request (app)
+        .post("/restaurants")
+        .send({ name: "crux" }) ;
+    expect (response.body).toHaveProperty("errors");
+    expect (Array.isArray(response.body.errors)).toBe(true)
+    })
